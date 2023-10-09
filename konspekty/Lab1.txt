@@ -1,0 +1,67 @@
+dotnet new sln    -> tworzenie solucji
+dotnet new webapi -n P01WebAPI
+dotnet sln add WebAPI/P01WebAPI/P01WebAPI.csproj
+dotnet run
+
+https://localhost:7114/swagger/index.html
+
+
+curl https://localhost:7114/api/WeatherForecast
+
+https://localhost:7114/api/WeatherForecast/test
+/hej?liczba1=5&liczba2=6
+
+
+pobieranie (zwracanie danych)
+HTTPGET
+
+upload 
+HTTPPOST
+
+edycja
+HTTPPUT
+
+usuwanie 
+HTTPDELETE
+
+
+Stworz API
+z 4 wystawionymi metodami
+Dodaj, Usun, Edytuj i Wczytaj
+
+Na razie serwis zapisuje do pliku dane
+lub zatrzymac w cachu 
+
+Okresl odpowiednie parametry wejsciowe 
+
+Dodaj mozliwosc filtorwania, sortowania i stronicowania 
+
+
+obiekt zawodnik: imie, nazwisko, kraj, dataUr, wzrost, waga
+text na zasadzie contains
+a liczby na zasadzie zakresu
+sorotwanie asc lub desc z mozliwosciu wyboru wielu kolumn
+
+stronicowanie : ile, strona 
+
+
+ [HttpPost]
+    public string NowaMetoda()
+    {
+        return "ok";
+    }
+
+    [HttpPost("test/{text}")]
+    public string MetodaZParametrem(
+        [FromRoute]string text, 
+        [FromQuery]int liczba1, 
+        [FromQuery]int liczba2, 
+        [FromBody] Person osoba
+        )
+    {
+        return $"text: {text} liczba1: {liczba1} " +
+            $" liczba2: {liczba2} Person: name: {osoba.Name} age: {osoba.Age}";
+    }
+
+
+
