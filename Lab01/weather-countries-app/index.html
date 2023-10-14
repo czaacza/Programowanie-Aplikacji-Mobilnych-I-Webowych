@@ -33,7 +33,7 @@
               </button>
             </form>
           </div>
-          <div class="search-container">
+          <div class="search-container" id="search-container-ip">
             <h2 class="search-title">Find the Location of the IP address</h2>
             <form action="/search" method="get">
               <input
@@ -44,6 +44,25 @@
                 placeholder="Search..."
               />
               <button type="submit" class="search-button" id="search-button-ip">
+                Search
+              </button>
+            </form>
+          </div>
+          <div class="search-container" id="search-container-code">
+            <h2 class="search-title">Find the Location by the Postal Code</h2>
+            <form action="/search" method="get">
+              <input
+                type="text"
+                name="query"
+                class="search-input"
+                id="search-input-code"
+                placeholder="Search..."
+              />
+              <button
+                type="submit"
+                class="search-button"
+                id="search-button-code"
+              >
                 Search
               </button>
             </form>

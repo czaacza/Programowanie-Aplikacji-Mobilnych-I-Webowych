@@ -5,6 +5,11 @@ const setSearchFormListener = function () {
     const searchInput = document.querySelector('.search-container input');
     const searchValue = searchInput.value;
     const url = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=dvT5HgUQ1B4sARqRSNudKCWvZOVRxHjy&q=${searchValue}`;
+
+    const countriesTitle = document.getElementById('countries-title');
+    countriesTitle.classList.remove('hidden');
+    countriesTitle.innerText = `Search results`;
+
     fetch(url)
       .then(function (response) {
         return response.json();
@@ -20,13 +25,71 @@ const setSearchFormListener = function () {
   });
 };
 
+const setSearchIPFormListener = function () {
+  const searchIpForm = document.querySelector('#search-container-ip form');
+  searchIpForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const searchInput = document.querySelector('.search-container input');
+    const searchValue = searchInput.value;
+    const url = `http://dataservice.accuweather.com/locations/v1/cities/ipaddress?apikey=dvT5HgUQ1B4sARqRSNudKCWvZOVRxHjy&q=${searchValue}`;
+
+    const countriesTitle = document.getElementById('countries-title');
+    countriesTitle.classList.remove('hidden');
+    countriesTitle.innerText = `Search results`;
+
+    fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        // Use the data to update the page
+        console.log(data);
+        displaySearchResults(data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
+};
+
+const setSearchCodeFormListener = function () {
+  const searchCodeForm = document.querySelector('#search-container-code form');
+
+  searchCodeForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const searchInput = document.querySelector('#search-container-code input');
+    const searchValue = searchInput.value;
+    const url = `http://dataservice.accuweather.com/locations/v1/postalcodes/search?apikey=dvT5HgUQ1B4sARqRSNudKCWvZOVRxHjy&q=${searchValue}`;
+
+    const countriesTitle = document.getElementById('countries-title');
+    countriesTitle.classList.remove('hidden');
+    countriesTitle.innerText = `Search results`;
+
+    fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+        displaySearchResults(data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
+};
+
 const setContinentButtonListeners = function () {
   continentButtons = document.querySelectorAll('.continent-btn');
-  console.log(continentButtons);
   continentButtons.forEach(function (button) {
     button.addEventListener('click', function () {
       value = button.getAttributeNode('value').value;
       const url = `http://dataservice.accuweather.com/locations/v1/countries/${value}?apikey=dvT5HgUQ1B4sARqRSNudKCWvZOVRxHjy&language=en-us`;
+
+      const countriesTitle = document.getElementById('countries-title');
+      countriesTitle.classList.remove('hidden');
+      countriesTitle.innerText = `Choose your country`;
+
       fetch(url)
         .then(function (response) {
           return response.json();
@@ -34,7 +97,7 @@ const setContinentButtonListeners = function () {
         .then(function (data) {
           // Use the data to update the page
           console.log(data);
-          displayCountries('country', data);
+          displayCountries(data);
           setCountryButtonListeners();
         })
         .catch(function (err) {
@@ -52,12 +115,17 @@ const setCountryButtonListeners = function () {
     button.addEventListener('click', function () {
       value = button.getAttributeNode('value').value;
       const url = `http://dataservice.accuweather.com/locations/v1/adminareas/${value}?apikey=dvT5HgUQ1B4sARqRSNudKCWvZOVRxHjy`;
+
+      const countriesTitle = document.getElementById('countries-title');
+      countriesTitle.classList.remove('hidden');
+      countriesTitle.innerText = `Choose your region`;
+
       fetch(url)
         .then(function (response) {
           return response.json();
         })
         .then(function (data) {
-          displayCountries('region', data);
+          displayCountries(data);
           console.log(data);
         })
         .catch(function (err) {
@@ -67,13 +135,9 @@ const setCountryButtonListeners = function () {
   });
 };
 
-function displayCountries(title, countries) {
+function displayCountries(countries) {
   const container = document.querySelector('#countries-container');
   container.innerHTML = '';
-
-  const countriesTitle = document.getElementById('countries-title');
-  countriesTitle.classList.remove('hidden');
-  countriesTitle.innerText = `Choose your ${title}`;
 
   countries.forEach((country) => {
     const card = document.createElement('div');
@@ -94,9 +158,9 @@ function displaySearchResults(results) {
   const container = document.querySelector('#countries-container');
   container.innerHTML = '';
 
-  const countriesTitle = document.getElementById('countries-title');
-  countriesTitle.classList.remove('hidden');
-  countriesTitle.innerText = `Search Results`;
+  if (!Array.isArray(results)) {
+    results = [results];
+  }
 
   results.forEach((result) => {
     const card = document.createElement('div');
@@ -115,3 +179,5 @@ function displaySearchResults(results) {
 
 setContinentButtonListeners();
 setSearchFormListener();
+setSearchIPFormListener();
+setSearchCodeFormListener();
